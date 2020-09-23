@@ -18,6 +18,6 @@ Get the FileSync.cpp <br>
 Add it to Environment variables where it's downloaded <br>
 <br>
 FileSync important.txt duplicate.txt foo.txt other.txt
-<br>
+<br> <br>
 Copy the contens of important to duplicate, foo and other <br>
 <i>Note:</i> You can only specify 10 arguments in the command line the first one is our app name the second one is the file from which data is to be read, which lefts us to specify 8 other files in which data will be written
