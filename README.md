@@ -9,4 +9,5 @@ ImGui-SFML (A binding for ImGui)
 SFML
 A TextEditor.h File
 
+
 Note: The above requirements is for the GUI Interface only you can simply download the file as use it as a command line Interface
