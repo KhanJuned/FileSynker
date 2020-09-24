@@ -15,7 +15,8 @@ File Synker is an Application that lets you copy content of one file to all the 
 
 <h2>How to use as a command</h2>
 Get the FileSync.cpp <br>
-Add it to Environment variables where it's downloaded <br>
+Compile it. <br>
+Add the .exe file to Environment variables where it's downloaded <br>
 <br>
 <blockquote>
 FileSync important.txt duplicate.txt foo.txt other.txt
