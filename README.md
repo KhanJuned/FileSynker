@@ -28,7 +28,7 @@ Clone the repository and use the FileSynk.exe in FileSynkApp Folder make sure to
   <li> <a href="https://github.com/tronkko/dirent">Dirent</a> </li>
 </ol>
 
-<i>Note: </i> The above requirements is for the GUI Interface only you can simply download the FileSync.cpp file as use it as a command line Interface <br>
+<i>Note: </i> The above requirements is for the GUI Interface only you can simply download the FileSynk.cpp file, Compile it and start using it as a command line Interface <br>
 
 <h2>Visual Studio Setup</h2>
 **************************************************************************************
@@ -50,7 +50,7 @@ Linker > Input: <br>
 <br>
 <ol>
   <li>Install Visual Studio make sure you install C++ development environment, Remember to always built the project as 64 bit</li>
-  <li>Make a Dependencies folder in your project and a subfolder include</li>
+  <li>Make a "Dependencies" folder in your project and a subfolder "include"</li>
   <li>make a project and get GLFW connected, add the lib-vc2019 to Dependencies > include</li>
   <li>Get imgui and imgui-sfml and add it in Dependencies > include, replace the file that you get from imgui and ImGuiFileDialog from the files that are present in my repo</li>
   <li>Download SFML and add it to Dependencies > include, Add the sfml-lib to include</li>
@@ -61,3 +61,7 @@ Linker > Input: <br>
   <li>Get ImGui TextEditor Support refer 5</li>
   <li>Make sure to follow the guides that are in repo of imgui, SFML, TextEditor, ImGuiFileDialog</li>
 </ol>
+
+References:<br>
+<a href="https://eliasdaler.github.io/using-imgui-with-sfml-pt1/"></a><br>
+<a href="https://eliasdaler.github.io/using-imgui-with-sfml-pt2/"></a>
