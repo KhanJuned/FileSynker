@@ -63,5 +63,5 @@ Linker > Input: <br>
 </ol>
 
 References:<br>
-<a href="https://eliasdaler.github.io/using-imgui-with-sfml-pt1/"></a><br>
-<a href="https://eliasdaler.github.io/using-imgui-with-sfml-pt2/"></a>
+https://eliasdaler.github.io/using-imgui-with-sfml-pt1/ <br>
+https://eliasdaler.github.io/using-imgui-with-sfml-pt2/
