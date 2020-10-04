@@ -1,7 +1,22 @@
 # FileSynker
-File Synker is an Application that lets you copy content of one file to all the other files that are provided by user
+File Synker is an Application that lets you copy/append content of one file to all the other files that are provided by user
 
-<h2>Dependencies for GUI Interface:</h2> <br>
+<h2>How to use as command line</h2>
+Get the FileSynk.cpp <br>
+Compile it. <br>
+Add the .exe file to Environment variables where it's downloaded <br>
+<br>
+Example: <br>
+<blockquote>
+  FileSynk important.txt duplicate.txt foo.txt other.txt
+</blockquote>
+<br>
+Copy the contens of important to duplicate, foo and other <br>
+<i>Note:</i> You can only specify 10 arguments in the command line the first one is our app name the second one is the file from which data is to be read, which lefts us to specify 8 other files in which data will be written
+<br>
+<h2>How to Get the GUI Interface</h2>
+
+<h2>Development Setup Requirements</h2> <br>
 <ol>
   <li> <a href="https://visualstudio.microsoft.com/">Visual Studio</a> </li>
   <li> <a href="https://www.glfw.org/download.html">GLFW 64 bit binaries</a> </li>
@@ -15,20 +30,7 @@ File Synker is an Application that lets you copy content of one file to all the 
 
 <i>Note: </i> The above requirements is for the GUI Interface only you can simply download the FileSync.cpp file as use it as a command line Interface <br>
 
-<h2>How to use as a command</h2>
-Get the FileSync.cpp <br>
-Compile it. <br>
-Add the .exe file to Environment variables where it's downloaded <br>
-<br>
-Example: <br>
-<blockquote>
-  FileSynk important.txt duplicate.txt foo.txt other.txt
-</blockquote>
-<br>
-Copy the contens of important to duplicate, foo and other <br>
-<i>Note:</i> You can only specify 10 arguments in the command line the first one is our app name the second one is the file from which data is to be read, which lefts us to specify 8 other files in which data will be written
-<br>
-<h2>Setup</h2>
+<h2>Visual Studio Setup</h2>
 **************************************************************************************
 <h3>Visual Studio Project Properties Settings</h3>
 Project Properties > C++ > General:
