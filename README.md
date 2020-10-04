@@ -1,6 +1,9 @@
 # FileSynker
 File Synker is an Application that lets you copy/append content of one file to all the other files that are provided by user
-
+<h2>Screenshots</h2>
+<img src="/Screens/Screen1.png">
+<img src="/Screens/Screen2.png">
+<img src="/Screens/Screen3.png">
 <h2>How to use as command line</h2>
 Get the FileSynk.cpp <br>
 Compile it. <br>
