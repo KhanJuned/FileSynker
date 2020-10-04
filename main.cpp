@@ -26,9 +26,11 @@
 std::string filepathname, filepath, filename, filter, userDatas, fullpath, tempfilename;
 std::string BufferData;
 char* FileData;
-
+int e = 0;
 bool flag = true, RenderFlag = true, WinFlag = false, SaveFlag = false, SyncFlag = false, RenderFileDialogFlag = false;
 bool EmptyFlag = false, ErrorFlag = false, ErrorWriteFlag = false, SuccessFlag = false;
+
+const char* current_item = NULL;
 
 std::multimap<std::string, std::string> Map;
 std::multimap<std::string, std::string>::iterator itr;
@@ -67,9 +69,7 @@ char* ReadFile(const char* filename) {
 	static char buffer[256];
 	FILE* fptr = fopen(filename, "r");
 
-	if (!fptr) {
-		ErrorFlag = true;
-	}
+	if (!fptr) { ErrorFlag = true; }
 	else {
 		int fptrChars = 0;
 		if (fptr != NULL) {
@@ -85,7 +85,11 @@ char* ReadFile(const char* filename) {
 	return buffer;
 }
 void WriteFile(const char* filename, const char* data) {
-	FILE* fptr = NULL;// fopen(filename, "w");
+	FILE* fptr = NULL;
+	if (e == 101)
+		fptr = fopen(filename, "a");
+	else
+		fptr = fopen(filename, "w");
 	if (!fptr) {
 		ErrorFlag = true;
 		ErrorWriteFlag = true;
@@ -98,7 +102,15 @@ void WriteFile(const char* filename, const char* data) {
 		fclose(fptr);
 	}
 }
-
+std::string convertToString(char* a, int size)
+{
+	std::string s = "";
+	for (int i = 0; i < size; i++) {
+		if (a[i] != NULL)
+			s = s + a[i];
+	}
+	return s;
+}
 int main()
 {
 	sf::RenderWindow window(sf::VideoMode(1360, 760), "");
@@ -164,95 +176,96 @@ int main()
 
 		ImGui::Begin("File Sync window");
 		ImGui::BeginGroup();
-			if (ImGui::Button("Open/Close text editor")) {
-				if (RenderFlag)
-					RenderFlag = false;
-				else
-					RenderFlag = true;
+		if (ImGui::Button("Open/Close text editor")) {
+			if (RenderFlag) {
+				RenderFlag = false;
+				SyncFlag = false;
 			}
-			if (RenderFlag == false) {
-				BufferData = texteditor.GetText();
-				if (BufferData.length() > 1) {
-					ImGui::SameLine();
-					if (ImGui::Button("Save")) {
-						igfd::ImGuiFileDialog::Instance()->OpenDialog("SaveKey", "Choose File", filters, ".");
-						if (SaveFlag)
-							SaveFlag = false;
-						else
-							SaveFlag = true;
-					}
-				}
-			}
-			if (SaveFlag) {
-				std::pair<std::string, std::string> filepair = OpenFileDialog("SaveKey");
-				if (!filepair.first.empty()) {
-					WriteFile(filepair.second.c_str(), texteditor.GetText().c_str());
-				}
-			}
-			if (ImGui::Button("Open File Dialog"))
-				igfd::ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey","Choose File", filters, ".");
-			std::pair<std::string, std::string> idontcareMap = OpenFileDialog("ChooseFileDlgKey");
-			ImGui::Separator();
-
-			if (!Map.empty()) {
-				itr = Map.begin();
-				if (itr->first.empty())
-					ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "No Files Synced");
-				else
-				{
-					ImGui::Text("List of opened files:");
-					for (itr = Map.begin(); itr != Map.end(); ++itr) {
-						if (!itr->first.empty()) {
-							charptr = itr->first.c_str();
-							FILE* OpenedFiles = fopen(itr->second.c_str(), "r");
-							if (OpenedFiles)
-								ImGui::Text(charptr);
-							fclose(OpenedFiles);
-						}
-					}
-				}
-				if (ImGui::Button("Empty List"))
-					EmptyFlag = true;
-			}
-			else {
-				ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "No Files Synced");
-			}
-			if (EmptyFlag) {
-				ImGui::OpenPopup("Empty List?");
-				if (ImGui::BeginPopupModal("Empty List?", NULL, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoCollapse))
-				{
-					ImGui::Text("files will not be deleted.\n\n");
-					ImGui::Separator();
-
-					if (ImGui::Button("Empty", ImVec2(120, 0))) {
-						Map.clear();
-						SyncFlag = false;
-						EmptyFlag = false;
-					}
-					ImGui::SameLine();
-					if (ImGui::Button("Cancel", ImVec2(120, 0))) {
-						ImGui::CloseCurrentPopup();
-						EmptyFlag = false;
-					}
-					ImGui::EndPopup();
-				}
-			}
-			if (Map.size() > 1) {
-				ImGui::Separator();
-				ImGui::Dummy(ImVec2(0.0f, 20.0f));
-				if (ImGui::Button("Sync Files")) {
-					if (SyncFlag)
-						SyncFlag = false;
+			else
+				RenderFlag = true;
+		}
+		if (RenderFlag == false) {
+			BufferData = texteditor.GetText();
+			if (BufferData.length() > 1) {
+				ImGui::SameLine();
+				if (ImGui::Button("Save")) {
+					igfd::ImGuiFileDialog::Instance()->OpenDialog("SaveKey", "Choose File", filters, ".");
+					if (SaveFlag)
+						SaveFlag = false;
 					else
-						SyncFlag = true;
+						SaveFlag = true;
 				}
 			}
-			ImGui::SameLine();
-			if (Map.size() > 1) {
-				if (ImGui::Button("Advanced Sync")) {}
+		}
+		if (SaveFlag) {
+			std::pair<std::string, std::string> filepair = OpenFileDialog("SaveKey");
+			if (!filepair.first.empty()) {
+				WriteFile(filepair.second.c_str(), texteditor.GetText().c_str());
 			}
-		ImGui::EndGroup();
+		}
+		if (ImGui::Button("Open File Dialog"))
+			igfd::ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "Choose File", filters, ".");
+		std::pair<std::string, std::string> idontcareMap = OpenFileDialog("ChooseFileDlgKey");
+		ImGui::Separator();
 
+		if (!Map.empty()) {
+			itr = Map.begin();
+			if (itr->first.empty())
+				ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "No Files Synced");
+			else
+			{
+				ImGui::Text("List of opened files:");
+				for (itr = Map.begin(); itr != Map.end(); ++itr) {
+					if (!itr->first.empty()) {
+						charptr = itr->first.c_str();
+						FILE* OpenedFiles = fopen(itr->second.c_str(), "r");
+						if (OpenedFiles)
+							ImGui::Text(charptr);
+						fclose(OpenedFiles);
+					}
+				}
+			}
+			if (ImGui::Button("Empty List"))
+				EmptyFlag = true;
+		}
+		else {
+			ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "No Files Synced");
+		}
+		if (EmptyFlag) {
+			ImGui::OpenPopup("Empty List?");
+			if (ImGui::BeginPopupModal("Empty List?", NULL, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoCollapse))
+			{
+				ImGui::Text("files will not be deleted.\n\n");
+				ImGui::Separator();
+
+				if (ImGui::Button("Empty", ImVec2(120, 0))) {
+					Map.clear();
+					SyncFlag = false;
+					EmptyFlag = false;
+				}
+				ImGui::SameLine();
+				if (ImGui::Button("Cancel", ImVec2(120, 0))) {
+					ImGui::CloseCurrentPopup();
+					EmptyFlag = false;
+				}
+				ImGui::EndPopup();
+			}
+		}
+		if (Map.size() > 1) {
+			ImGui::Separator();
+			ImGui::Dummy(ImVec2(0.0f, 20.0f));
+			if (ImGui::Button("Sync Files")) {
+				if (SyncFlag)
+					SyncFlag = false;
+				else
+					SyncFlag = true;
+			}
+		}
+		ImGui::SameLine();
+		if (Map.size() > 1) {
+			if (ImGui::Button("Advanced Sync")) {}
+		}
+		ImGui::EndGroup();
 		if (SyncFlag) {
 			RenderFlag = true;
 
@@ -270,7 +283,6 @@ int main()
 					}
 				}
 			}
-			static const char* current_item = NULL;
 			ImGui::Text("Read Data from: "); ImGui::SameLine();
 			if (ImGui::BeginCombo("##combo", current_item)) {
 				for (int n = 0; n < size; n++) {
@@ -280,17 +292,25 @@ int main()
 					if (is_selected)
 						ImGui::SetItemDefaultFocus();
 				}
-				ImGui::EndCombo();
+				ImGui::EndCombo(); ImGui::SameLine();
 			}
+			ImGui::SameLine();
+			ImGui::RadioButton("Append", &e, 101); ImGui::SameLine();
+			ImGui::RadioButton("OverWrite", &e, 102);
+
 			ImGui::Dummy(ImVec2(0.0f, 20.0f));
 			ImGui::Text("Read Data from the provided file and sync it to all the other files in the list");
 			if (current_item) {
 				ImGui::Dummy(ImVec2(0.0f, 20.0f));
 				if (ImGui::Button("CONFIRM SYNC")) {
+					FILE* file = fopen("DoNotDelete.txt", "w");
 					for (itr = Map.begin(); itr != Map.end(); ++itr) {
 						if (itr->first == current_item)
 							FileData = ReadFile(itr->second.c_str());
+						fputs(itr->second.c_str(), file);
+						fputc('\n', file);
 					}
+					fclose(file);
 					if (ErrorFlag == false) {
 						for (itr = Map.begin(); itr != Map.end(); ++itr) {
 							if (itr->first != current_item) {
@@ -308,13 +328,13 @@ int main()
 			if (ImGui::BeginPopupModal("Message Logs", NULL, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoCollapse))
 			{
 
-			ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.0f, 1.0f), "Success!");
-			ImGui::Separator();
+				ImGui::TextColored(ImVec4(0.0f, 1.0f, 0.0f, 1.0f), "Success!");
+				ImGui::Separator();
 
-			if (ImGui::Button("OK", ImVec2(120, 0))) {
-				SuccessFlag = false;
-			}
-			ImGui::EndPopup();
+				if (ImGui::Button("OK", ImVec2(120, 0))) {
+					SuccessFlag = false;
+				}
+				ImGui::EndPopup();
 			}
 		}
 		if (ErrorFlag) {
@@ -354,7 +374,6 @@ int main()
 			ImGui::SameLine();  texteditor.Render("Text Editor");
 		}
 		ImGui::End();
-
 		window.clear(bgColor);
 		ImGui::SFML::Render(window);
 		window.display();
