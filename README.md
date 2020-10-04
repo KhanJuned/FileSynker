@@ -4,7 +4,7 @@ File Synker is an Application that lets you copy/append content of one file to a
 <h2>How to use as command line</h2>
 Get the FileSynk.cpp <br>
 Compile it. <br>
-Add the .exe file to Environment variables where it's downloaded <br>
+Add the .exe file to Environment variables<br>
 <br>
 Example: <br>
 <blockquote>
