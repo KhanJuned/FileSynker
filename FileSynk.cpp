@@ -36,16 +36,15 @@ void WriteFile(const char* filename, const char* data) {
         if (input.at(0) == 'Y' || input.at(0) == 'y' || input.at(0) == '1') {
             fptr = fopen(filename, "w");
             if (fptr) {
-				std::cout << filename << " created Succesfully\n";
-				break;
-			} else {
+	        std::cout << filename << " created Succesfully\n";
+	    } else {
                 std::cout << "Error creating " << filename << std::endl;
-				break;
-			}
+                exit(0);
+	     }
         }
-		if (input.at(0) != 'Y' && input.at(0) != 'y' && input.at(0) != '1') {	
-			exit(0);
-		}
+	if (input.at(0) != 'Y' && input.at(0) != 'y' && input.at(0) != '1') {	
+	    exit(0);
+         }
     }
     while ((*data)) {
         fputc(*data, fptr);
